@@ -82,6 +82,13 @@ api.interceptors.response.use(
       return Promise.reject(err);
     }
 
+    // ── Handle network error (tidak ada koneksi internet) ──
+    if (!err.response) {
+      toast.error("Tidak ada koneksi internet. Periksa jaringan Anda.");
+      navigateToErrorPage(500);
+      return Promise.reject(err);
+    }
+
     if (err.response?.status === 401 && !orig._retry) {
       orig._retry = true;
       try {
